@@ -6,7 +6,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import umc.spring.domain.Member;
+import umc.spring.service.MemberService.MemberQueryService;
+import umc.spring.service.MissionService.MissionQueryService;
+import umc.spring.service.ReviewService.ReviewQueryService;
 import umc.spring.service.StoreService.StoreQueryService;
+
+import java.util.Optional;
 
 @SpringBootApplication
 @EnableJpaAuditing
@@ -33,6 +39,57 @@ public class Application {
 
 			storeService.findStoresByNameAndScore(name, score)
 					.forEach(System.out::println);
+
+
+			MemberQueryService memberService = context.getBean(MemberQueryService.class);
+
+			Long id = 1L;
+			System.out.println("id: " + id);
+
+			// 마이페이지
+			Optional<Member> member = memberService.findMember(id);
+			if (member.isPresent()) {
+				Member foundMember = member.get();
+				System.out.println("멤버 이름 = " + foundMember.getName() + ", 포인트 = " + foundMember.getPoint() + ", 이메일 = " + foundMember.getEmail());
+			} else {
+				System.out.println("멤버를 찾을수 없음");
+			}
+
+			String region = "서울";
+
+			// complete 미션 조회
+			MissionQueryService missionService = context.getBean(MissionQueryService.class);
+			missionService.findCompleteMissionsByRegion(id, region)
+					.forEach(mission -> {
+						System.out.printf("미션 ID: %d, 보상: %d, 기한: %s, 상세: %s%n",
+								mission.getId(),
+								mission.getReward(),
+								mission.getDeadline(),
+								mission.getMissionSpec());
+					});
+
+			// challenging 미션 조회
+			missionService.findChallengingMissionsByRegion(id, region)
+					.forEach(mission -> {
+						System.out.printf("미션 ID: %d, 보상: %d, 기한: %s, 상세: %s%n",
+								mission.getId(),
+								mission.getReward(),
+								mission.getDeadline(),
+								mission.getMissionSpec());
+					});
+
+			Long store_id = 1L;
+
+//			// 가게 리뷰 조회
+//			ReviewQueryService reviewService = context.getBean(ReviewQueryService.class);
+//			reviewService.findReviewByStore(store_id)
+//					.forEach(review -> {
+//						System.out.printf("리뷰 ID: %d, 내용: %s 작성자 이름: %s",
+//								review.getId(),
+//								review.getBody(),
+//								review.getMember().getName());
+//					});
+
 		};
 	}
 
