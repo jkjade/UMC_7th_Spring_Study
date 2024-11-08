@@ -23,8 +23,8 @@ public class MissionQueryServiceImpl implements MissionQueryService{
     }
 
     @Override
-    public List<Mission> findCompleteMissionsByRegion(Long member_id, String region) {
-        List<Mission> filteredMissions = missionRepository.findCompleteMissionsByRegion(member_id, region);
+    public List<Mission> findCompleteMissionsByRegionAndMember(Long member_id, String region) {
+        List<Mission> filteredMissions = missionRepository.findCompleteByAndMember(member_id, region);
 
         filteredMissions.forEach(mission -> System.out.println("CompleteMission: " + mission));
 
@@ -32,10 +32,19 @@ public class MissionQueryServiceImpl implements MissionQueryService{
     }
 
     @Override
-    public List<Mission> findChallengingMissionsByRegion(Long member_id, String region) {
-        List<Mission> filteredMissions = missionRepository.findChallengingMissionsByRegion(member_id, region);
+    public List<Mission> findChallengingByRegionAndMember(Long member_id, String region) {
+        List<Mission> filteredMissions = missionRepository.findChallengingByRegionAndMember(member_id, region);
 
         filteredMissions.forEach(mission -> System.out.println("ChallengingMission: " + mission));
+
+        return filteredMissions;
+    }
+
+    @Override
+    public List<Mission> findByRegion(String region) {
+        List<Mission> filteredMissions = missionRepository.findByRegion(region);
+
+        filteredMissions.forEach(mission -> System.out.println("RegionMission: " + mission));
 
         return filteredMissions;
     }

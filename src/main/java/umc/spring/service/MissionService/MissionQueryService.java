@@ -8,7 +8,11 @@ import java.util.Optional;
 public interface MissionQueryService {
 
     Optional<Mission> findMission(Long id);
-    List<Mission> findCompleteMissionsByRegion(Long member_id, String region);
-    List<Mission> findChallengingMissionsByRegion(Long member_id, String region);
+
+    List<Mission> findCompleteMissionsByRegionAndMember(Long member_id, String region);
+
+    List<Mission> findChallengingByRegionAndMember(Long member_id, String region);
+
+    List<Mission> findByRegion(String region);
 
 }

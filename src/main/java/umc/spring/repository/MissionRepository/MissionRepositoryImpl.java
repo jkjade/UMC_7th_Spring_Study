@@ -20,7 +20,7 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom{
     private final QMission mission = QMission.mission;
 
     @Override
-    public List<Mission> findChallengingMissionsByRegion(Long member_id, String region) {
+    public List<Mission> findChallengingByRegionAndMember(Long member_id, String region) {
         BooleanBuilder predicate = new BooleanBuilder();
 
         if (member_id != null) {
@@ -44,7 +44,7 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom{
     }
 
     @Override
-    public List<Mission> findCompleteMissionsByRegion(Long member_id, String region) {
+    public List<Mission> findCompleteByAndMember(Long member_id, String region) {
         BooleanBuilder predicate = new BooleanBuilder();
 
         if (member_id != null) {
@@ -63,6 +63,23 @@ public class MissionRepositoryImpl implements MissionRepositoryCustom{
                 .select(mission)
                 .from(memberMission)
                 .join(memberMission.mission, mission) // MemberMission과 Mission을 조인
+                .where(predicate)
+                .fetch();
+    }
+
+    @Override
+    public List<Mission> findByRegion(String region) {
+        BooleanBuilder predicate = new BooleanBuilder();
+
+        // region에 따라 필터링 (region이 null이 아닐 경우)
+        if (region != null) {
+            predicate.and(mission.store.region.name.eq(region));
+        }
+
+        return jpaQueryFactory
+                .selectFrom(mission)
+                .join(mission.store, store).fetchJoin()         // store와 함께 조회
+                .join(store.region).fetchJoin()
                 .where(predicate)
                 .fetch();
     }

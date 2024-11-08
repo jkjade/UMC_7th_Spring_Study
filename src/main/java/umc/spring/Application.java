@@ -32,6 +32,9 @@ public class Application {
 			String name = "요아정";
 			Float score = 4.0f;
 
+			Long id = 1L;
+			String region = "서울";
+
 			// 쿼리 메서드 호출 및 쿼리 문자열과 파라미터 출력
 			System.out.println("Executing findStoresByNameAndScore with parameters:");
 			System.out.println("Name: " + name);
@@ -43,8 +46,10 @@ public class Application {
 
 			MemberQueryService memberService = context.getBean(MemberQueryService.class);
 
-			Long id = 1L;
+
 			System.out.println("id: " + id);
+
+			System.out.println("======================================================== 마이페이지 ========================================================");
 
 			// 마이페이지
 			Optional<Member> member = memberService.findMember(id);
@@ -55,11 +60,13 @@ public class Application {
 				System.out.println("멤버를 찾을수 없음");
 			}
 
-			String region = "서울";
+			System.out.println("======================================================== complete ========================================================");
+
+
 
 			// complete 미션 조회
 			MissionQueryService missionService = context.getBean(MissionQueryService.class);
-			missionService.findCompleteMissionsByRegion(id, region)
+			missionService.findCompleteMissionsByRegionAndMember(id, region)
 					.forEach(mission -> {
 						System.out.printf("미션 ID: %d, 보상: %d, 기한: %s, 상세: %s%n",
 								mission.getId(),
@@ -68,8 +75,10 @@ public class Application {
 								mission.getMissionSpec());
 					});
 
+			System.out.println("======================================================== challenging ========================================================");
+
 			// challenging 미션 조회
-			missionService.findChallengingMissionsByRegion(id, region)
+			missionService.findChallengingByRegionAndMember(id, region)
 					.forEach(mission -> {
 						System.out.printf("미션 ID: %d, 보상: %d, 기한: %s, 상세: %s%n",
 								mission.getId(),
@@ -79,6 +88,17 @@ public class Application {
 					});
 
 			Long store_id = 1L;
+
+			System.out.println("======================================================== 홈 화면 ========================================================");
+
+			missionService.findByRegion(region)
+					.forEach(mission -> {
+						System.out.printf("미션 ID: %d, 보상: %d, 기한: %s, 상세: %s%n",
+								mission.getId(),
+								mission.getReward(),
+								mission.getDeadline(),
+								mission.getMissionSpec());
+					});
 
 //			// 가게 리뷰 조회
 //			ReviewQueryService reviewService = context.getBean(ReviewQueryService.class);
