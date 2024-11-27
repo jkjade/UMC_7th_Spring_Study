@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-//@Transactional(readOnly = true)
+@Transactional(readOnly = true)
 public class StoreQueryServiceImpl implements StoreQueryService{
 
     private final StoreRepository storeRepository;

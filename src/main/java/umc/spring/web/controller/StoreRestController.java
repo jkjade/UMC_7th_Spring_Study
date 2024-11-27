@@ -23,7 +23,6 @@ import umc.spring.web.dto.StoreResponseDTO;
 
 @RestController
 @RequiredArgsConstructor
-@Validated
 @RequestMapping("/stores")
 public class StoreRestController {
 
@@ -52,4 +51,5 @@ public class StoreRestController {
         Page<Review> reviewList = storeQueryService.getReviewList(storeId, page);
         return ApiResponse.onSuccess(StoreConverter.reviewPreViewListDTO(reviewList));
     }
+
 }
