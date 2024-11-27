@@ -69,7 +69,7 @@ public class StoreConverter {
     }
     public static StoreResponseDTO.MissionPreViewListDTO missionPreViewListDTO(Page<Mission> missionList){
 
-        List<StoreResponseDTO.MissionPreViewDTO> reviewPreViewDTOList = missionList.stream()
+        List<StoreResponseDTO.MissionPreViewDTO> missionPreViewDTOList = missionList.stream()
                 .map(StoreConverter::missionPreViewDTO).collect(Collectors.toList());
 
         return StoreResponseDTO.MissionPreViewListDTO.builder()
@@ -77,8 +77,8 @@ public class StoreConverter {
                 .isFirst(missionList.isFirst())
                 .totalPage(missionList.getTotalPages())
                 .totalElements(missionList.getTotalElements())
-                .listSize(reviewPreViewDTOList.size())
-                .missionList(reviewPreViewDTOList)
+                .listSize(missionPreViewDTOList.size())
+                .missionList(missionPreViewDTOList)
                 .build();
     }
 }
