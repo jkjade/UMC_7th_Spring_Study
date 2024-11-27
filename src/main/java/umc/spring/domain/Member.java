@@ -3,6 +3,9 @@ package umc.spring.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import jakarta.persistence.Id;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import umc.spring.domain.common.BaseEntity;
 import umc.spring.domain.enums.Gender;
 import umc.spring.domain.enums.MemberStatus;
@@ -17,6 +20,8 @@ import java.util.List;
 
 @Entity     // @Entity 어노테이션을 통해 해당 클래스가 JPA의 엔티티임을 명시합니다.
 @Getter     // @Getter는 lombok에서 제공해주는 것으로, getter를 만들어주는 어노테이션입니다.
+@DynamicUpdate
+@DynamicInsert
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor // @Builder, @NoArgsConstructer(access = AccessLevel.PROTECTED), @AllArgsConstructor 은 자바의 디자인 패턴 중 하나인 빌더 패턴을 사용하기 위함
@@ -49,9 +54,10 @@ public class Member extends BaseEntity {
 
     private LocalDate inactiveDate;
 
-    @Column(nullable=false, length = 50)
+    // @Column(nullable=false, length = 50)
     private String email;
 
+    @ColumnDefault("0")
     private Integer point;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)      // CascadeType.ALL은 Member의 변화에 따라 Review, MemberPrefer 등의 엔티티가 영향을 받는다는 뜻
@@ -66,27 +72,4 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<MemberMission> memberMissionList = new ArrayList<>();
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Integer getPoint() {
-        return point;
-    }
-
-    public void setPoint(Integer point) {
-        this.point = point;
-    }
 }
