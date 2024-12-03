@@ -23,6 +23,7 @@ public class MemberConverter {
 
     public static Member toMember(MemberRequestDTO.JoinDto request){
 
+        System.out.println("MemberConverter toMember 작동");
         Gender gender = null;
 
         switch (request.getGender()){
@@ -38,10 +39,13 @@ public class MemberConverter {
         }
 
         return Member.builder()
+                .email(request.getEmail())
+                .password(request.getPassword())
                 .address(request.getAddress())
                 .specAddress(request.getSpecAddress())
                 .gender(gender)
                 .name(request.getName())
+                .role(request.getRole())
                 .memberPreferList(new ArrayList<>())
                 .build();
     }
